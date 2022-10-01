@@ -1,0 +1,26 @@
+schema: "https://tmdb.apps.quintero.io/"
+documents: "src/graphql/schema/**/*.graphql"
+generates:
+  src/graphql/index.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+      - graphql-codegen-apollo-next
+    config:
+      reactApolloVersion: 3
+      exportFragmentSpreadSubTypes: true
+      documentMode: graphQLTag
+      withMutationFn: true
+      withMutationOptionsType: true
+      withHOC: true
+      extract:
+        popularMovies:
+          return: "movies.popular.edges!.map((item) => item!.node!)"
+          as: MovieDataFragment[]
+        upcomingMovies:
+          return: "movies.upcoming.edges!.map((item) => item!.node!)"
+          as: MovieDataFragment[]
+        trendingMovies:
+          return: "movies.trending.edges!.map((item) => item!.node!)"
+          as: MovieDataFragment[]

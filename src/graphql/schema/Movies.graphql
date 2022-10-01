@@ -1,0 +1,39 @@
+query popularMovies {
+  movies {
+    popular {
+      edges {
+        node { ...MovieData }
+      }
+    }
+  }
+}
+
+query upcomingMovies {
+  movies {
+    upcoming {
+      edges {
+        node { ...MovieData }
+      }
+    }
+  }
+}
+
+query trendingMovies {
+  movies {
+    trending {
+      edges {
+        node { ...MovieData }
+      }
+    }
+  }
+}
+
+fragment MovieData on Movie {
+  id
+  title
+  overview
+  tagline
+  imdbID
+  poster(size: W92)
+  backdrop(size: W780)
+}
