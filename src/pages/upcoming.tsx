@@ -2,16 +2,16 @@ import { MovieList } from 'components/MovieList/MovieList'
 import { GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Layout } from '../components/Layout/Layout'
-import { MovieDataFragment, upcomingMovies } from '../graphql/index'
+import { MovieListDataFragment, upcomingMovies } from '../graphql/index'
 
 export interface UpcomingProps {
-  movies: MovieDataFragment[]
+  list: MovieListDataFragment
 }
 
 const UpcomingPage: NextPage<UpcomingProps> = (props) => {
   const router = useRouter()
   if (router.isFallback) return <div>Loading ...</div>
-  const { movies } = props
+  const movies = props.list.edges!.map((edge) => edge!.node!)
   return (
     <Layout title='Upcoming' section='upcoming'>
       <MovieList movies={movies} />
@@ -20,8 +20,8 @@ const UpcomingPage: NextPage<UpcomingProps> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<UpcomingProps> = async () => {
-  const movies = await upcomingMovies({})
-  return { props: { movies }, revalidate: 10 }
+  const list = await upcomingMovies({ first: 10 })
+  return { props: { list }, revalidate: 10 }
 }
 
 export default UpcomingPage
