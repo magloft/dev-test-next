@@ -11,7 +11,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({ title, section, childre
   return (
     <>
       <Head>
-        <title>Movie Explorer - {title}</title>
+        <title>{title}</title>
         <link rel='icon' href='/favicon.ico' />
         <meta name='theme-color' content='#7b46f6' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=5.0'></meta>
