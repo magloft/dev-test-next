@@ -11,7 +11,18 @@ const logging = new ApolloLink((operation: Operation, forward: NextLink) => {
 
 const apolloClient = new ApolloClient({
   link: ApolloLink.from([logging, createHttpLink({ uri: 'https://tmdb.apps.quintero.io/', fetch })]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Movies: {
+        merge(existing, incoming, { mergeObjects }) {
+          return mergeObjects(existing, incoming)
+        }
+      },
+      Movie: {
+        keyFields: ['id']
+      }
+    }
+  })
 })
 
 export function getApolloClient(): ApolloClient<NormalizedCacheObject> {

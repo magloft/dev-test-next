@@ -16,11 +16,11 @@ generates:
       withHOC: true
       extract:
         popularMovies:
-          return: "movies.popular.edges!.map((item) => item!.node!)"
-          as: MovieDataFragment[]
+          return: "movies.popular"
+          as: MovieListDataFragment
         upcomingMovies:
-          return: "movies.upcoming.edges!.map((item) => item!.node!)"
-          as: MovieDataFragment[]
+          return: "movies.upcoming"
+          as: MovieListDataFragment
         trendingMovies:
-          return: "movies.trending.edges!.map((item) => item!.node!)"
-          as: MovieDataFragment[]
+          return: "movies.trending"
+          as: MovieListDataFragment

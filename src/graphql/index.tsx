@@ -1481,47 +1481,65 @@ export enum VideoResolution {
   UltraHd = 'UltraHd'
 }
 
-export type PopularMoviesQueryVariables = Exact<{ [key: string]: never; }>;
+export type PopularMoviesQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type PopularMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', popular: { __typename?: 'MovieConnection', edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, tagline: string, imdbID: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
+export type PopularMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', popular: { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
 
-export type UpcomingMoviesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UpcomingMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', upcoming: { __typename?: 'MovieConnection', edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, tagline: string, imdbID: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
-
-export type TrendingMoviesQueryVariables = Exact<{ [key: string]: never; }>;
+export type UpcomingMoviesQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type TrendingMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', trending: { __typename?: 'MovieConnection', edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, tagline: string, imdbID: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
+export type UpcomingMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', upcoming: { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
 
-export type MovieDataFragment = { __typename?: 'Movie', id: string, title: string, overview: string, tagline: string, imdbID: string, poster?: any | null, backdrop?: any | null };
+export type TrendingMoviesQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type TrendingMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', trending: { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
+
+export type MovieListDataFragment = { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null };
+
+export type MovieDataFragment = { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null };
 
 export const MovieDataFragmentDoc = gql`
     fragment MovieData on Movie {
   id
   title
   overview
-  tagline
-  imdbID
   poster(size: W92)
   backdrop(size: W780)
 }
     `;
-export const PopularMoviesDocument = gql`
-    query popularMovies {
-  movies {
-    popular {
-      edges {
-        node {
-          ...MovieData
-        }
-      }
+export const MovieListDataFragmentDoc = gql`
+    fragment MovieListData on MovieConnection {
+  pageInfo {
+    hasNextPage
+    endCursor
+  }
+  edges {
+    node {
+      ...MovieData
     }
   }
 }
     ${MovieDataFragmentDoc}`;
+export const PopularMoviesDocument = gql`
+    query popularMovies($first: Int, $after: String) {
+  movies {
+    popular(first: $first, after: $after) {
+      ...MovieListData
+    }
+  }
+}
+    ${MovieListDataFragmentDoc}`;
 export type PopularMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<PopularMoviesQuery, PopularMoviesQueryVariables>
     } & TChildProps;
@@ -1548,6 +1566,8 @@ export function withPopularMovies<TProps, TChildProps = {}, TDataName extends st
  * @example
  * const { data, loading, error } = usePopularMoviesQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -1563,18 +1583,14 @@ export type PopularMoviesQueryHookResult = ReturnType<typeof usePopularMoviesQue
 export type PopularMoviesLazyQueryHookResult = ReturnType<typeof usePopularMoviesLazyQuery>;
 export type PopularMoviesQueryResult = Apollo.QueryResult<PopularMoviesQuery, PopularMoviesQueryVariables>;
 export const UpcomingMoviesDocument = gql`
-    query upcomingMovies {
+    query upcomingMovies($first: Int, $after: String) {
   movies {
-    upcoming {
-      edges {
-        node {
-          ...MovieData
-        }
-      }
+    upcoming(first: $first, after: $after) {
+      ...MovieListData
     }
   }
 }
-    ${MovieDataFragmentDoc}`;
+    ${MovieListDataFragmentDoc}`;
 export type UpcomingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<UpcomingMoviesQuery, UpcomingMoviesQueryVariables>
     } & TChildProps;
@@ -1601,6 +1617,8 @@ export function withUpcomingMovies<TProps, TChildProps = {}, TDataName extends s
  * @example
  * const { data, loading, error } = useUpcomingMoviesQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -1616,18 +1634,14 @@ export type UpcomingMoviesQueryHookResult = ReturnType<typeof useUpcomingMoviesQ
 export type UpcomingMoviesLazyQueryHookResult = ReturnType<typeof useUpcomingMoviesLazyQuery>;
 export type UpcomingMoviesQueryResult = Apollo.QueryResult<UpcomingMoviesQuery, UpcomingMoviesQueryVariables>;
 export const TrendingMoviesDocument = gql`
-    query trendingMovies {
+    query trendingMovies($first: Int, $after: String) {
   movies {
-    trending {
-      edges {
-        node {
-          ...MovieData
-        }
-      }
+    trending(first: $first, after: $after) {
+      ...MovieListData
     }
   }
 }
-    ${MovieDataFragmentDoc}`;
+    ${MovieListDataFragmentDoc}`;
 export type TrendingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<TrendingMoviesQuery, TrendingMoviesQueryVariables>
     } & TChildProps;
@@ -1654,6 +1668,8 @@ export function withTrendingMovies<TProps, TChildProps = {}, TDataName extends s
  * @example
  * const { data, loading, error } = useTrendingMoviesQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -1668,15 +1684,15 @@ export function useTrendingMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type TrendingMoviesQueryHookResult = ReturnType<typeof useTrendingMoviesQuery>;
 export type TrendingMoviesLazyQueryHookResult = ReturnType<typeof useTrendingMoviesLazyQuery>;
 export type TrendingMoviesQueryResult = Apollo.QueryResult<TrendingMoviesQuery, TrendingMoviesQueryVariables>;
-export async function popularMovies(variables: PopularMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<PopularMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieDataFragment[]> {
+export async function popularMovies(variables: PopularMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<PopularMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
   const { data } = await getApolloClient().query<PopularMoviesQuery, PopularMoviesQueryVariables>({ variables, query: PopularMoviesDocument, ...options })
-  return data.movies.popular.edges!.map((item) => item!.node!)
+  return data.movies.popular
 }
-export async function upcomingMovies(variables: UpcomingMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<UpcomingMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieDataFragment[]> {
+export async function upcomingMovies(variables: UpcomingMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<UpcomingMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
   const { data } = await getApolloClient().query<UpcomingMoviesQuery, UpcomingMoviesQueryVariables>({ variables, query: UpcomingMoviesDocument, ...options })
-  return data.movies.upcoming.edges!.map((item) => item!.node!)
+  return data.movies.upcoming
 }
-export async function trendingMovies(variables: TrendingMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<TrendingMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieDataFragment[]> {
+export async function trendingMovies(variables: TrendingMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<TrendingMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
   const { data } = await getApolloClient().query<TrendingMoviesQuery, TrendingMoviesQueryVariables>({ variables, query: TrendingMoviesDocument, ...options })
-  return data.movies.trending.edges!.map((item) => item!.node!)
+  return data.movies.trending
 }

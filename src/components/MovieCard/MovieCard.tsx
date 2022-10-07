@@ -16,7 +16,7 @@ export const MovieCard: FunctionComponent<MovieCardProps> = ({ movie }) => {
       </div>
       <div className={styles['movie-body']}>
         <h2>{movie.title}</h2>
-        <p>{movie.tagline}</p>
+        <p>{movie.overview}</p>
       </div>
     </div>
   )
