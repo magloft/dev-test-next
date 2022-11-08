@@ -1,13 +1,33 @@
+import { MovieDataFragment } from 'graphql'
 import Head from 'next/head'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from 'react'
 import { NavBar } from '../NavBar/NavBar'
 
 interface LayoutProps extends PropsWithChildren {
   title: string
   section: string
+  presearched?: string
+  focusInputWhenSearch?: boolean
+  setSearchedResult?: Dispatch<SetStateAction<MovieDataFragment[]>>
 }
 
-export const Layout: FunctionComponent<LayoutProps> = ({ title, section, children }) => {
+export const Layout: FunctionComponent<LayoutProps> = ({
+  title,
+  section,
+  presearched,
+  focusInputWhenSearch,
+  setSearchedResult,
+  children
+}) => {
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
+  if (!hasMounted) {
+    return <></>
+  }
   return (
     <>
       <Head>
@@ -24,7 +44,13 @@ export const Layout: FunctionComponent<LayoutProps> = ({ title, section, childre
         <meta name='twitter:creator' content='@magloft' />
         <meta name='twitter:title' content={title} />
       </Head>
-      <NavBar title='Movie Explorer' section={section} />
+      <NavBar
+        title='Movie Explorer'
+        section={section}
+        presearched={presearched}
+        focusInputWhenSearch={focusInputWhenSearch}
+        setSearchedResult={setSearchedResult}
+      />
       {children}
     </>
   )
