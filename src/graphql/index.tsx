@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
-import * as ApolloReactHoc from '@apollo/client/react/hoc';
+import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client'
+import * as ApolloReactHoc from '@apollo/client/react/hoc'
 import { getApolloClient } from './client'
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -1552,7 +1552,7 @@ export const PopularMoviesDocument = gql`
 export type PopularMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<PopularMoviesQuery, PopularMoviesQueryVariables>
     } & TChildProps;
-export function withPopularMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withPopularMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   PopularMoviesQuery,
   PopularMoviesQueryVariables,
@@ -1603,7 +1603,7 @@ export const UpcomingMoviesDocument = gql`
 export type UpcomingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<UpcomingMoviesQuery, UpcomingMoviesQueryVariables>
     } & TChildProps;
-export function withUpcomingMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withUpcomingMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   UpcomingMoviesQuery,
   UpcomingMoviesQueryVariables,
@@ -1654,7 +1654,7 @@ export const TrendingMoviesDocument = gql`
 export type TrendingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<TrendingMoviesQuery, TrendingMoviesQueryVariables>
     } & TChildProps;
-export function withTrendingMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withTrendingMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   TrendingMoviesQuery,
   TrendingMoviesQueryVariables,
@@ -1705,7 +1705,7 @@ export const SearchMoviesDocument = gql`
 export type SearchMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<SearchMoviesQuery, SearchMoviesQueryVariables>
     } & TChildProps;
-export function withSearchMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withSearchMovies<TProps extends Exact<{ term: string; first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   SearchMoviesQuery,
   SearchMoviesQueryVariables,

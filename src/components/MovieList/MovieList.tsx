@@ -25,7 +25,6 @@ export const MovieList: FunctionComponent<MovieListProps> = ({ movies, pageInfo,
   const handleLoadMore = async () => {
     try{
       if (currentPageInfo.hasNextPage) {
-        // we can use lazy query aswel and with the update in the responseState we can update the movies state and us that load the next movies
         const fetchedMovies = await getMovies({
           first: offSet,
           after: currentPageInfo.endCursor
@@ -33,8 +32,8 @@ export const MovieList: FunctionComponent<MovieListProps> = ({ movies, pageInfo,
 
         setCurrentPageInfo({
           pageType: currentPageInfo.pageType,
-          endCursor: currentPageInfo.endCursor || '',
-          hasNextPage: currentPageInfo.hasNextPage
+          endCursor: fetchedMovies.pageInfo.endCursor || '',
+          hasNextPage: fetchedMovies.pageInfo.hasNextPage
         })
         setMovieList([
           ...movieList,
@@ -59,8 +58,8 @@ export const MovieList: FunctionComponent<MovieListProps> = ({ movies, pageInfo,
       }
     >
     <div className={styles['movie-list']} >
-      {movieList.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+      {movieList.map((movie, index) => (
+        <MovieCard key={index} movie={movie} />
       ))}
     </div>
     </InfiniteScroll>

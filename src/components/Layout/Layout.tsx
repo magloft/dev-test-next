@@ -9,6 +9,7 @@ interface LayoutProps extends PropsWithChildren {
   presearched?: string
   focusInputWhenSearch?: boolean
   setSearchedResult?: Dispatch<SetStateAction<MovieDataFragment[]>>
+  setSearchTerm?: Dispatch<SetStateAction<string>>
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
@@ -16,7 +17,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   section,
   presearched,
   focusInputWhenSearch,
-  setSearchedResult,
+  setSearchTerm,
   children
 }) => {
   const [hasMounted, setHasMounted] = useState(false)
@@ -49,7 +50,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
         section={section}
         presearched={presearched}
         focusInputWhenSearch={focusInputWhenSearch}
-        setSearchedResult={setSearchedResult}
+        setSearchTerm={setSearchTerm}
       />
       {children}
     </>

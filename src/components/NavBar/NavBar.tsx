@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { MovieDataFragment } from 'graphql'
 import debounce from 'lodash.debounce'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,7 +16,7 @@ export interface NavBarProps {
   section: string
   presearched?: string
   focusInputWhenSearch?: boolean
-  setSearchedResult?: Dispatch<SetStateAction<MovieDataFragment[]>>
+  setSearchTerm?: Dispatch<SetStateAction<string>>
 }
 
 export const NavBar: FunctionComponent<NavBarProps> = ({
@@ -25,18 +24,14 @@ export const NavBar: FunctionComponent<NavBarProps> = ({
   section,
   presearched,
   focusInputWhenSearch,
-  setSearchedResult
+  setSearchTerm
 }) => {
   const router = useRouter()
   const [search, setSearch] = useState<string>(presearched || '')
   const baseSearchURL = useMemo(() => '/search?term=', [])
 
-  // const [getSearchedMovies, searchedMoviesResponse] = useSearchMoviesLazyQuery()
-  // if the query was present it could be used
-
   const debouncedFetchData = debounce((searchTerm: string) => {
-    console.log({ searchTerm })
-    // getSearchedMovies
+    if (setSearchTerm) setSearchTerm(searchTerm)
    }, 1000)
 
   const handleTextInput = (e: { target: { value: string } }) => {
@@ -59,11 +54,6 @@ export const NavBar: FunctionComponent<NavBarProps> = ({
       debouncedFetchData(search)
     }
   }, [search])
-
-  // useEffect(() => {
-  // for working search api once we get the response we will update the searched movies
-  //   setSearchedResult(searchedMoviesResponse?.data)
-  // }, [searchedMoviesResponse?.data])
 
   return (
     <header className={styles['navbar']}>
