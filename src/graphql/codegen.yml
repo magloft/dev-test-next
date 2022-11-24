@@ -24,3 +24,6 @@ generates:
         trendingMovies:
           return: "movies.trending"
           as: MovieListDataFragment
+        searchMovies:
+          return: "movies.search"
+          as: MovieListDataFragment

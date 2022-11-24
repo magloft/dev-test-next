@@ -22,6 +22,14 @@ query trendingMovies($first: Int, $after: String) {
   }
 }
 
+query searchMovies($term: String!, $first: Int, $after: String) {
+  movies {
+    search(term: $term, first: $first, after: $after) {
+      ...MovieListData
+    }
+  }
+}
+
 fragment MovieListData on MovieConnection {
   pageInfo {
     hasNextPage
