@@ -30,9 +30,11 @@ export const NavBar: FunctionComponent<NavBarProps> = ({
   const [search, setSearch] = useState<string>(presearched || '')
   const baseSearchURL = useMemo(() => '/search?term=', [])
 
-  const debouncedFetchData = debounce((searchTerm: string) => {
-    if (setSearchTerm) setSearchTerm(searchTerm)
-   }, 1000)
+  const debouncedFetchData = useMemo(() => {
+    return debounce((searchTerm: string) => {
+      if (setSearchTerm) setSearchTerm(searchTerm)
+     }, 1000)
+  }, [])
 
   const handleTextInput = (e: { target: { value: string } }) => {
     if (e.target.value.length < search.length) {
