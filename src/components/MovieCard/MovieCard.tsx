@@ -12,7 +12,7 @@ export const MovieCard: FunctionComponent<MovieCardProps> = ({ movie }) => {
   return (
     <div className={styles['movie-card']} style={{ backgroundImage }}>
       <div className={styles['movie-poster']}>
-        <Image src={movie.poster} alt={movie.title} width={92} height={138} />
+        <Image src={movie.poster || 'https://image.tmdb.org/t/p/w92/kRlWUzcvQwb4weZyD9iWCSIuXZC.jpg'} alt={movie.title} width={92} height={138} />
       </div>
       <div className={styles['movie-body']}>
         <h2>{movie.title}</h2>

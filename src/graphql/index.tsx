@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
-import * as ApolloReactHoc from '@apollo/client/react/hoc';
+import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client'
+import * as ApolloReactHoc from '@apollo/client/react/hoc'
 import { getApolloClient } from './client'
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -1505,6 +1505,15 @@ export type TrendingMoviesQueryVariables = Exact<{
 
 export type TrendingMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', trending: { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
 
+export type SearchMoviesQueryVariables = Exact<{
+  term: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchMoviesQuery = { __typename?: 'Query', movies: { __typename?: 'Movies', search: { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null } } };
+
 export type MovieListDataFragment = { __typename?: 'MovieConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges?: Array<{ __typename?: 'MovieEdge', node?: { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null } | null } | null> | null };
 
 export type MovieDataFragment = { __typename?: 'Movie', id: string, title: string, overview: string, poster?: any | null, backdrop?: any | null };
@@ -1543,7 +1552,7 @@ export const PopularMoviesDocument = gql`
 export type PopularMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<PopularMoviesQuery, PopularMoviesQueryVariables>
     } & TChildProps;
-export function withPopularMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withPopularMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   PopularMoviesQuery,
   PopularMoviesQueryVariables,
@@ -1594,7 +1603,7 @@ export const UpcomingMoviesDocument = gql`
 export type UpcomingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<UpcomingMoviesQuery, UpcomingMoviesQueryVariables>
     } & TChildProps;
-export function withUpcomingMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withUpcomingMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   UpcomingMoviesQuery,
   UpcomingMoviesQueryVariables,
@@ -1645,7 +1654,7 @@ export const TrendingMoviesDocument = gql`
 export type TrendingMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<TrendingMoviesQuery, TrendingMoviesQueryVariables>
     } & TChildProps;
-export function withTrendingMovies<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withTrendingMovies<TProps extends Exact<{ first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   TrendingMoviesQuery,
   TrendingMoviesQueryVariables,
@@ -1684,6 +1693,58 @@ export function useTrendingMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type TrendingMoviesQueryHookResult = ReturnType<typeof useTrendingMoviesQuery>;
 export type TrendingMoviesLazyQueryHookResult = ReturnType<typeof useTrendingMoviesLazyQuery>;
 export type TrendingMoviesQueryResult = Apollo.QueryResult<TrendingMoviesQuery, TrendingMoviesQueryVariables>;
+export const SearchMoviesDocument = gql`
+    query searchMovies($term: String!, $first: Int, $after: String) {
+  movies {
+    search(term: $term, first: $first, after: $after) {
+      ...MovieListData
+    }
+  }
+}
+    ${MovieListDataFragmentDoc}`;
+export type SearchMoviesProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchMoviesQuery, SearchMoviesQueryVariables>
+    } & TChildProps;
+export function withSearchMovies<TProps extends Exact<{ term: string; first?: InputMaybe<number> | undefined; after?: InputMaybe<string> | undefined; }>, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchMoviesQuery,
+  SearchMoviesQueryVariables,
+  SearchMoviesProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchMoviesQuery, SearchMoviesQueryVariables, SearchMoviesProps<TChildProps, TDataName>>(SearchMoviesDocument, {
+      alias: 'searchMovies',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchMoviesQuery__
+ *
+ * To run a query within a React component, call `useSearchMoviesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchMoviesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchMoviesQuery({
+ *   variables: {
+ *      term: // value for 'term'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useSearchMoviesQuery(baseOptions: Apollo.QueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, options);
+      }
+export function useSearchMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, options);
+        }
+export type SearchMoviesQueryHookResult = ReturnType<typeof useSearchMoviesQuery>;
+export type SearchMoviesLazyQueryHookResult = ReturnType<typeof useSearchMoviesLazyQuery>;
+export type SearchMoviesQueryResult = Apollo.QueryResult<SearchMoviesQuery, SearchMoviesQueryVariables>;
 export async function popularMovies(variables: PopularMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<PopularMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
   const { data } = await getApolloClient().query<PopularMoviesQuery, PopularMoviesQueryVariables>({ variables, query: PopularMoviesDocument, ...options })
   return data.movies.popular
@@ -1695,4 +1756,8 @@ export async function upcomingMovies(variables: UpcomingMoviesQueryVariables, op
 export async function trendingMovies(variables: TrendingMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<TrendingMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
   const { data } = await getApolloClient().query<TrendingMoviesQuery, TrendingMoviesQueryVariables>({ variables, query: TrendingMoviesDocument, ...options })
   return data.movies.trending
+}
+export async function searchMovies(variables: SearchMoviesQueryVariables, options?: Omit<Apollo.QueryOptions<SearchMoviesQueryVariables>, 'query' | 'variables'>): Promise<MovieListDataFragment> {
+  const { data } = await getApolloClient().query<SearchMoviesQuery, SearchMoviesQueryVariables>({ variables, query: SearchMoviesDocument, ...options })
+  return data.movies.search
 }

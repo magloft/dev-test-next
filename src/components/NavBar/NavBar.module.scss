@@ -2,6 +2,7 @@
   box-shadow: 0 1px 4px 0 rgb(76 82 103 / 10%);
   background-color: #171717;
   color: #FFFFFF;
+  width: 100vw;
 
   nav {
     position: relative;
@@ -36,6 +37,7 @@
   flex-direction: row;
   justify-content: flex-start;
   height: 64px;
+  width: 100vw;
 
   .menu-item {
     display: flex;
